@@ -1,5 +1,5 @@
 // ══════════════════════════════════════════════════════════════════════
-//  tutor.js · IQ+ · BYOK AI tutor  (Socratic · Oregon-Trail format)
+//  tutor.js · Math Tutor · BYOK AI tutor  (Socratic · Oregon-Trail format)
 //  ────────────────────────────────────────────────────────────────────
 //  PAGE 0 — TOC
 //    PROVIDERS ........... free-key + Anthropic, OpenAI-compatible
@@ -57,7 +57,7 @@ const tutor = (() => {
       ? `The student has this lesson open:\n\nMODULE: ${L.module}\nTOPIC: ${L.name}\n\nLESSON CONTENT:\n${stripHtml(L.content)}`
       : `No lesson is open yet. The student can pick a topic from the left, name any concept they want to learn, or paste a problem they're stuck on.`;
 
-    return `You are the IQ+ tutor. You are a warm, patient math teacher. You LOVE explaining ideas, and you make up your own examples and practice problems. You never hand the student the final answer to a problem — you walk them to it.
+    return `You are the Math Tutor — a warm, patient math teacher. You LOVE explaining ideas, and you make up your own examples and practice problems. You never hand the student the final answer to a problem — you walk them to it.
 
 ${ctx}
 

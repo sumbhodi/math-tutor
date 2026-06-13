@@ -4,7 +4,7 @@ A self-contained math curriculum that walks you from placement-test algebra towa
 
 Built from 18 years of teaching the students who place into College Algebra after a 30-year gap — and from being one of them.
 
-> **This is a demo:** Module 1 of 8 (Algebra Foundations). The full 300→600 path is the IQ+ platform.
+> **This is a demo:** Module 1 of 8 (Algebra Foundations) — the full 300→600 path is in progress.
 
 ## Use
 
@@ -16,9 +16,11 @@ Open `index.html` in any browser. Pick a topic from the left.
 - **Module 1 — Algebra Foundations:** Inequalities & Absolute Value (full lesson with interactive checks), Factoring, Rational Expressions, and more
 - LaTeX math rendered with MathJax
 
-## Where it's going
+## The AI tutor
 
-The next step is a **BYOK AI tutor**: paste your own model key, and the tutor explains any step on demand. It teaches before it answers — Socratic, offers a few options, tells you *why* a wrong one is wrong, shows all the work, and tells you to copy it onto your own scratch paper. A snapshot hook is already wired in for "photograph your homework, get help."
+Hit **🎓 Ask the tutor** and bring a free key (Groq · Gemini · OpenRouter — or Anthropic). Ask about any concept: it explains the idea, shows a worked example, then makes up a practice problem and walks you through it — four choices per step, it tells you *why* a wrong pick is wrong, does the arithmetic so a typo can't sink you, and tells you to write each step on your own scratch paper. It never just hands over the answer.
+
+Your key is saved only in your browser and called straight from it — the tutor has no server.
 
 ## License
 
