@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accuplacer + | 300→600</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .module-active { border-left: 4px solid #2563eb; background: #f0f7ff; }
+        .lesson-container h2 { font-size: 1.5rem; font-weight: 700; color: #1e293b; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        .lesson-container h3 { font-size: 1.25rem; font-weight: 600; color: #334155; margin-top: 1.25rem; }
+        .lesson-container p { margin-bottom: 1rem; line-height: 1.6; color: #334155; }
+        .lesson-container ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+        .math-block { overflow-x: auto; padding: 1.5rem; background: #f8fafc; border-radius: 0.75rem; margin: 1rem 0; border: 1px solid #e2e8f0; }
+        #snapshot-preview { max-width: 100%; border-radius: 8px; margin-bottom: 1rem; display: none; border: 2px solid #3b82f6; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <div id="app" class="flex flex-col md:flex-row h-screen overflow-hidden">
+        <aside class="w-full md:w-72 bg-white border-r border-slate-200 overflow-y-auto flex-shrink-0">
+            <div class="p-6 border-b">
+                <h1 class="text-xl font-bold text-blue-900">Accuplacer + | 300→600</h1>
+                <p class="text-xs text-slate-500 uppercase tracking-widest mt-1">MATH 1010 → Calculus</p>
+            </div>
+            <nav class="p-4 space-y-1" id="toc-nav"></nav>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto p-4 md:p-10 relative">
+            <div id="content-area" class="max-w-4xl mx-auto space-y-8">
+                <div class="text-center py-20">
+                    <i class="fa-solid fa-graduation-cap text-6xl text-blue-200 mb-6"></i>
+                    <h2 class="text-3xl font-bold text-slate-800">Accuplacer + Path</h2>
+                    <p class="text-slate-600 mt-2">Demo — Module 1 of the full 300→600 path. Pick a topic to begin.</p>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+
+    <script>
+        let currentTopicName = "";
+        
+        const curriculum = [
+            {
+                id: "m1",
+                title: "Module 1: Algebra Foundations",
+                topics: [
+                    { id: "1.1", name: "Inequalities & Absolute Value", content: `<h2>Inequalities & Absolute Value</h2>
+
+<h3>Compound Inequalities</h3>
+<p>When you see multiple conditions, you're combining solution sets. <b>AND</b> means both must be true (intersection) - like $2 < x < 5$. <b>OR</b> means at least one is true (union) - like $x < 2$ or $x > 5$.</p>
+<div class="math-block">$$2 < x < 5 \\quad \\text{means both } x > 2 \\text{ and } x < 5$$</div>
+
+<h3>Absolute Value as Distance</h3>
+<p>Absolute value measures distance from zero. When you write $|x - 3| < 5$, you're asking: "What numbers are within 5 units of 3?" This "neighborhood" idea shows up everywhere in calculus (limits, continuity, epsilon-delta proofs).</p>
+
+<p><b>Equations</b> split into two cases:</p>
+<div class="math-block">$$|x - a| = b \\implies x = a + b \\text{ or } x = a - b$$</div>
+
+<p><b>Inequalities</b> create bounded regions or split the number line:</p>
+<div class="math-block">$$|x - a| < b \\implies a - b < x < a + b$$</div>
+<div class="math-block">$$|x - a| > b \\implies x < a - b \\text{ or } x > a + b$$</div>
+
+<p>The "less than" version keeps you close (inside the neighborhood). The "greater than" version pushes you away (outside the neighborhood).</p>
+
+<h3>Polynomial Inequalities</h3>
+<p>When solving something like $(x-2)(x+3) > 0$, you're asking where the product is positive. Find the zeros first ($x = 2$ and $x = -3$), then test a point in each region. The signs alternate at each zero.</p>
+<div class="math-block">$$\\text{Solution: } x < -3 \\text{ or } x > 2$$</div>
+
+<p>For rational inequalities like $\\frac{x-1}{x+2} \\geq 0$, same process but watch for undefined points (where denominator = 0).</p>`,
+                        practice: [
+                            {
+                                id: "1.1-p1",
+                                problem: "Solve: $-3 < 2x + 1 < 7$",
+                                steps: [
+                                    {
+                                        num: 1,
+                                        display: "$-3 < 2x + 1 < 7$",
+                                        question: "What should we do first?",
+                                        choices: [
+                                            {
+                                                text: "Subtract 1 from all three parts",
+                                                correct: true,
+                                                feedback: "✅ Yes! Isolate the term with x."
+                                            },
+                                            {
+                                                text: "Divide everything by 2",
+                                                correct: false,
+                                                feedback: "Not yet - we need to isolate 2x first."
+                                            },
+                                            {
+                                                text: "Square all three parts",
+                                                correct: false,
+                                                feedback: "You're thinking of equations with radicals. We just need to isolate x here."
+                                            },
+                                            {
+                                                text: "Take a break 🚰",
+                                                correct: false,
+                                                feedback: "You just started! But hydration is always correct. Come back when ready."
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        num: 2,
+                                        display: "$-4 < 2x < 6$",
+                                        workShown: "We subtracted 1: $-3 - 1 < 2x + 1 - 1 < 7 - 1$",
+                                        question: "Now what?",
+                                        choices: [
+                                            {
+                                                text: "Divide all parts by 2",
+                                                correct: true,
+                                                feedback: "✅ Perfect! Final step."
+                                            },
+                                            {
+                                                text: "Add 4 to everything",
+                                                correct: false,
+                                                feedback: "That would undo our work. We need to get x alone by dividing."
+                                            },
+                                            {
+                                                text: "Submit answer: $-4 < x < 6$",
+                                                correct: false,
+                                                feedback: "Close! But we still have that 2 in front of x."
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        num: 3,
+                                        display: "$-2 < x < 3$",
+                                        workShown: "Divided by 2: $\\frac{-4}{2} < \\frac{2x}{2} < \\frac{6}{2}$",
+                                        question: "What now?",
+                                        choices: [
+                                            {
+                                                text: "Submit answer: $-2 < x < 3$ ✓",
+                                                correct: true,
+                                                feedback: "🎯 Correct! The solution is all x between -2 and 3."
+                                            },
+                                            {
+                                                text: "Keep simplifying",
+                                                correct: false,
+                                                feedback: "It's already fully simplified. You're done!"
+                                            },
+                                            {
+                                                text: "Check by plugging in x = 0",
+                                                correct: false,
+                                                feedback: "Good instinct! 0 is in (-2, 3), and $-3 < 1 < 7$ ✓. But you've already solved it."
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                id: "1.1-p2",
+                                problem: "Solve: $|x - 5| = 8$",
+                                steps: [
+                                    {
+                                        num: 1,
+                                        display: "$|x - 5| = 8$",
+                                        question: "What should we do?",
+                                        choices: [
+                                            {
+                                                text: "Split: $x - 5 = 8$ or $x - 5 = -8$",
+                                                correct: true,
+                                                feedback: "✅ Perfect! Absolute value equations always split into two cases."
+                                            },
+                                            {
+                                                text: "Square both sides",
+                                                correct: false,
+                                                feedback: "That's for radical equations. Absolute value splits into ± cases."
+                                            },
+                                            {
+                                                text: "Take a chess break ♟️",
+                                                correct: false,
+                                                feedback: "Just getting started! But tactical thinking helps both chess and math. Come back refreshed."
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        num: 2,
+                                        display: "$x - 5 = 8$ or $x - 5 = -8$",
+                                        question: "Solve the first equation: $x - 5 = 8$",
+                                        choices: [
+                                            {
+                                                text: "$x = 13$",
+                                                correct: true,
+                                                feedback: "✅ Right! Now the second equation."
+                                            },
+                                            {
+                                                text: "$x = 3$",
+                                                correct: false,
+                                                feedback: "Check your arithmetic: $8 + 5 = ?$"
+                                            },
+                                            {
+                                                text: "$x = -3$",
+                                                correct: false,
+                                                feedback: "Wrong sign. We have $x - 5 = 8$, so add 5."
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        num: 3,
+                                        display: "$x - 5 = -8$",
+                                        question: "Solve: $x - 5 = -8$",
+                                        choices: [
+                                            {
+                                                text: "$x = -3$",
+                                                correct: true,
+                                                feedback: "🎯 Perfect! Solutions: $x = 13$ or $x = -3$"
+                                            },
+                                            {
+                                                text: "$x = 3$",
+                                                correct: false,
+                                                feedback: "Watch signs: $-8 + 5 = ?$"
+                                            },
+                                            {
+                                                text: "$x = -13$",
+                                                correct: false,
+                                                feedback: "Close! $-8 + 5 = -3$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                id: "1.1-p3",
+                                problem: "Solve: $|x + 2| < 6$",
+                                steps: [
+                                    {
+                                        num: 1,
+                                        display: "$|x + 2| < 6$",
+                                        question: "This creates what kind of solution?",
+                                        choices: [
+                                            {
+                                                text: "A bounded interval (keeps x close)",
+                                                correct: true,
+                                                feedback: "✅ Yes! 'Less than' means staying within the neighborhood."
+                                            },
+                                            {
+                                                text: "Two separate regions (pushes x away)",
+                                                correct: false,
+                                                feedback: "That's 'greater than' (>). 'Less than' (<) keeps things bounded."
+                                            },
+                                            {
+                                                text: "No solution",
+                                                correct: false,
+                                                feedback: "There's definitely a solution! Distance can be less than 6."
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        num: 2,
+                                        display: "$-6 < x + 2 < 6$",
+                                        workShown: "Rewrite as compound: $|x + 2| < 6 \\implies -6 < x + 2 < 6$",
+                                        question: "Now what?",
+                                        choices: [
+                                            {
+                                                text: "Subtract 2 from all parts",
+                                                correct: true,
+                                                feedback: "✅ Isolate x!"
+                                            },
+                                            {
+                                                text: "Divide by 2",
+                                                correct: false,
+                                                feedback: "There's no 2 multiplying x. We need to subtract 2."
+                                            },
+                                            {
+                                                text: "Stretch break 🧘",
+                                                correct: false,
+                                                feedback: "Good thinking! Stand up, touch your toes. Your spine will thank you. Back in a sec?"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        num: 3,
+                                        display: "$-8 < x < 4$",
+                                        workShown: "$-6 - 2 < x + 2 - 2 < 6 - 2$",
+                                        question: "Final answer?",
+                                        choices: [
+                                            {
+                                                text: "$-8 < x < 4$ ✓",
+                                                correct: true,
+                                                feedback: "🎯 Perfect! All numbers between -8 and 4."
+                                            },
+                                            {
+                                                text: "$x < -8$ or $x > 4$",
+                                                correct: false,
+                                                feedback: "You flipped it! That would be the solution to $|x + 2| > 6$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                id: "1.1-p4",
+                                problem: "Solve: $(x - 3)(x + 1) > 0$",
+                                steps: [
+                                    {
+                                        num: 1,
+                                        display: "$(x - 3)(x + 1) > 0$",
+                                        question: "Find the zeros (where the expression = 0)",
+                                        choices: [
+                                            {
+                                                text: "$x = 3$ and $x = -1$",
+                                                correct: true,
+                                                feedback: "✅ Right! These split the number line into regions."
+                                            },
+                                            {
+                                                text: "$x = -3$ and $x = 1$",
+                                                correct: false,
+                                                feedback: "Check signs: $(x - 3) = 0$ when $x = 3$"
+                                            },
+                                            {
+                                                text: "You have died of dysentery 🪦",
+                                                correct: false,
+                                                feedback: "Oh no! Take a water break, rehydrate, and come back when you're ready to ford this river."
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        num: 2,
+                                        display: "Zeros at $x = -1$ and $x = 3$",
+                                        workShown: "Test regions: $x < -1$, $-1 < x < 3$, $x > 3$",
+                                        question: "Where is the product positive?",
+                                        choices: [
+                                            {
+                                                text: "$x < -1$ or $x > 3$",
+                                                correct: true,
+                                                feedback: "🎯 Perfect! Signs alternate at each zero. Both outer regions are positive."
+                                            },
+                                            {
+                                                text: "$-1 < x < 3$",
+                                                correct: false,
+                                                feedback: "Test a value: try $x = 0$. Is $(0-3)(0+1) > 0$? Nope, $(-3)(1) = -3$"
+                                            },
+                                            {
+                                                text: "All real numbers",
+                                                correct: false,
+                                                feedback: "The middle region is negative. Test $x = 0$: $(-3)(1) = -3 < 0$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                id: "1.1-p5",
+                                problem: "Solve: $\\frac{x - 2}{x + 3} \\geq 0$",
+                                steps: [
+                                    {
+                                        num: 1,
+                                        display: "$\\frac{x - 2}{x + 3} \\geq 0$",
+                                        question: "Find critical points (zeros and undefined)",
+                                        choices: [
+                                            {
+                                                text: "Zero at $x = 2$, undefined at $x = -3$",
+                                                correct: true,
+                                                feedback: "✅ Perfect! Numerator zero → zero. Denominator zero → undefined."
+                                            },
+                                            {
+                                                text: "Zero at $x = -3$, undefined at $x = 2$",
+                                                correct: false,
+                                                feedback: "Backwards! Numerator gives zeros, denominator gives undefined points."
+                                            },
+                                            {
+                                                text: "Walk break 🚶",
+                                                correct: false,
+                                                feedback: "Nice idea! Movement helps memory stick. Take a lap and come back."
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        num: 2,
+                                        display: "Critical points: $x = -3$ (undefined), $x = 2$ (zero)",
+                                        workShown: "Test regions: $x < -3$, $-3 < x < 2$, $x > 2$",
+                                        question: "Where is the expression ≥ 0?",
+                                        choices: [
+                                            {
+                                                text: "$-3 < x \\leq 2$ or $x > 2$",
+                                                correct: false,
+                                                feedback: "Test $x = 0$: $\\frac{-2}{3} < 0$. Middle region is negative!"
+                                            },
+                                            {
+                                                text: "$x < -3$ or $x \\geq 2$",
+                                                correct: true,
+                                                feedback: "🎯 Perfect! Include $x = 2$ (equals zero), exclude $x = -3$ (undefined)."
+                                            },
+                                            {
+                                                text: "$x \\geq 2$ only",
+                                                correct: false,
+                                                feedback: "Don't forget the left region! Test $x = -4$: $\\frac{-6}{-1} = 6 > 0$ ✓"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        quiz: [
+                            {
+                                id: "1.1-q1",
+                                skillArea: "Absolute Value Equations",
+                                question: "What is the solution to $|x - 3| = 7$?",
+                                choices: [
+                                    {text: "$x = 10$ or $x = -4$", correct: true, feedback: "✅ Perfect! Split into two cases: $x - 3 = 7$ gives $x = 10$, and $x - 3 = -7$ gives $x = -4$."},
+                                    {text: "$x = 4$ or $x = -10$", correct: false, feedback: "Watch your signs! When $x - 3 = 7$, add 3 to get $x = 10$, not 4."},
+                                    {text: "$-4 < x < 10$", correct: false, feedback: "That's the solution to $|x - 3| < 7$ (an inequality, not equation)."},
+                                    {text: "🚰 Water break", correct: false, feedback: "Hydrate or die-drate! But come back and solve this."}
+                                ]
+                            },
+                            {
+                                id: "1.1-q2",
+                                skillArea: "Absolute Value Inequalities",
+                                question: "Solve: $|2x + 4| \\leq 8$",
+                                choices: [
+                                    {text: "$-6 \\leq x \\leq 2$", correct: true, feedback: "✅ Correct! Rewrite as $-8 \\leq 2x + 4 \\leq 8$, then subtract 4 and divide by 2."},
+                                    {text: "$x \\leq -6$ or $x \\geq 2$", correct: false, feedback: "You flipped it! That's the 'greater than' case. 'Less than' creates a bounded interval."},
+                                    {text: "$-2 \\leq x \\leq 6$", correct: false, feedback: "Sign error. Check: when $2x + 4 = -8$, what's $x$?"},
+                                    {text: "☕ Coffee break", correct: false, feedback: "Caffeine powers math! But finish this one first."}
+                                ]
+                            },
+                            {
+                                id: "1.1-q3",
+                                skillArea: "Compound Inequalities",
+                                question: "Which inequality is equivalent to $-3 < 4x - 7 < 9$?",
+                                choices: [
+                                    {text: "$1 < x < 4$", correct: true, feedback: "✅ Perfect! Add 7 to all parts: $4 < 4x < 16$, then divide by 4."},
+                                    {text: "$-10 < x < 2$", correct: false, feedback: "You divided by 4 before adding 7. Order matters!"},
+                                    {text: "$-2.5 < x < 2.25$", correct: false, feedback: "Calculator malfunction detected. Try again with careful arithmetic."},
+                                    {text: "Died of dysentery 🪦", correct: false, feedback: "The Oregon Trail claims another victim! Rehydrate and respawn."}
+                                ]
+                            },
+                            {
+                                id: "1.1-q4",
+                                skillArea: "Polynomial Inequalities",
+                                question: "Where is $(x + 2)(x - 5) \\leq 0$?",
+                                choices: [
+                                    {text: "$-2 \\leq x \\leq 5$", correct: true, feedback: "✅ Yes! Product is negative between the zeros. Include endpoints since we want $\\leq 0$."},
+                                    {text: "$x \\leq -2$ or $x \\geq 5$", correct: false, feedback: "Test $x = 0$: $(2)(-5) = -10 < 0$ ✓. So 0 is in the solution, but your answer excludes it!"},
+                                    {text: "$-5 \\leq x \\leq 2$", correct: false, feedback: "Wrong zeros! $(x + 2) = 0$ when $x = -2$, not $-5$."},
+                                    {text: "🎮 Gaming break", correct: false, feedback: "Level up your math first, then game on!"}
+                                ]
+                            },
+                            {
+                                id: "1.1-q5",
+                                skillArea: "Rational Inequalities",
+                                question: "Solve: $\\frac{x + 1}{x - 4} > 0$",
+                                choices: [
+                                    {text: "$x < -1$ or $x > 4$", correct: true, feedback: "🎯 Perfect! Fraction is positive when both parts have same sign. Test regions to verify."},
+                                    {text: "$-1 < x < 4$", correct: false, feedback: "Test $x = 0$: $\\frac{1}{-4} = -0.25 < 0$. Middle region is negative!"},
+                                    {text: "$x > 4$ only", correct: false, feedback: "Don't forget the left region! Test $x = -2$: $\\frac{-1}{-6} = \\frac{1}{6} > 0$ ✓"},
+                                    {text: "🍕 Pizza break", correct: false, feedback: "Your brain burns 20% of your calories. Fuel up and come back!"}
+                                ]
+                            },
+                            {
+                                id: "1.1-q6",
+                                skillArea: "Absolute Value Equations",
+                                question: "If $|3x - 2| = 10$, what are all possible values of $x$?",
+                                choices: [
+                                    {text: "$x = 4$ or $x = -\\frac{8}{3}$", correct: true, feedback: "✅ Excellent! Split into $3x - 2 = 10$ (gives $x = 4$) and $3x - 2 = -10$ (gives $x = -\\frac{8}{3}$)."},
+                                    {text: "$x = 4$ or $x = -4$", correct: false, feedback: "Check the second case: $3x - 2 = -10$ means $3x = -8$, so $x = -\\frac{8}{3}$, not $-4$."},
+                                    {text: "$x = 12$ or $x = -8$", correct: false, feedback: "You multiplied instead of dividing. After getting $3x = 12$, divide by 3."},
+                                    {text: "🚶 Walk break", correct: false, feedback: "Movement helps memory! Take 5 and come back fresh."}
+                                ]
+                            },
+                            {
+                                id: "1.1-q7",
+                                skillArea: "Absolute Value Inequalities",
+                                question: "Solve: $|x - 1| > 5$",
+                                choices: [
+                                    {text: "$x < -4$ or $x > 6$", correct: true, feedback: "✅ Perfect! 'Greater than' pushes away from center. Solutions are outside the interval $[-4, 6]$."},
+                                    {text: "$-4 < x < 6$", correct: false, feedback: "That's the solution to $|x - 1| < 5$. You want the OUTSIDE of that interval."},
+                                    {text: "$x \\leq -4$ or $x \\geq 6$", correct: false, feedback: "Close! But strict inequality ($>$) means strict boundaries ($<$ and $>$), not $\\leq$ and $\\geq$."},
+                                    {text: "📚 Reading break", correct: false, feedback: "Math isn't a race. Step away, read something fun, come back."}
+                                ]
+                            },
+                            {
+                                id: "1.1-q8",
+                                skillArea: "Rational Inequalities",
+                                question: "Which values satisfy $\\frac{x^2 - 9}{x + 2} \\geq 0$?",
+                                choices: [
+                                    {text: "$-3 \\leq x < -2$ or $x \\geq 3$", correct: true, feedback: "🎯 Excellent! Factor numerator: $\\frac{(x-3)(x+3)}{x+2}$. Zeros at $-3, 3$; undefined at $-2$. Test regions carefully!"},
+                                    {text: "$x \\leq -3$ or $x \\geq 3$", correct: false, feedback: "You forgot $x = -2$ makes it undefined! The interval $-3 \\leq x < -2$ works but $x = -2$ doesn't."},
+                                    {text: "$-2 < x \\leq -3$ or $x \\geq 3$", correct: false, feedback: "$-2 < x \\leq -3$ is impossible (nothing is both greater than $-2$ AND less than $-3$)."},
+                                    {text: "🎵 Music break", correct: false, feedback: "Classical music and math go well together. Take 5!"}
+                                ]
+                            },
+                            {
+                                id: "1.1-q9",
+                                skillArea: "Word Problems",
+                                question: "A rectangle's length is 3 more than twice its width. If the perimeter is less than 30, which inequality represents possible widths $w$?",
+                                choices: [
+                                    {text: "$w < 4$", correct: true, feedback: "✅ Perfect! Length $= 2w + 3$. Perimeter: $2w + 2(2w+3) < 30$ → $6w + 6 < 30$ → $w < 4$."},
+                                    {text: "$w < 5$", correct: false, feedback: "Check your algebra. $2w + 2(2w + 3) < 30$ simplifies to $6w + 6 < 30$, then $6w < 24$."},
+                                    {text: "$w < 12$", correct: false, feedback: "You didn't account for both length AND width in perimeter formula. It's $2$(width $+$ length)."},
+                                    {text: "🧮 Calculator break", correct: false, feedback: "Sometimes pen and paper beat calculators. Stretch and try again!"}
+                                ]
+                            },
+                            {
+                                id: "1.1-q10",
+                                skillArea: "Advanced Mixed",
+                                question: "For what values is $\\frac{|x - 2|}{x + 1} \\leq 3$?",
+                                choices: [
+                                    {text: "$x \\geq -\\frac{5}{4}$ and $x \\neq -1$", correct: true, feedback: "🏆 Outstanding! Split into cases: when $x \\geq 2$ and $x < 2$, solve separately, exclude $x = -1$ (undefined), take union."},
+                                    {text: "$-\\frac{5}{4} \\leq x \\leq \\frac{11}{2}$", correct: false, feedback: "You forgot to exclude $x = -1$ (makes denominator zero) and handle the absolute value cases separately."},
+                                    {text: "$x \\leq \\frac{11}{2}$", correct: false, feedback: "The left boundary matters! Also this creates issues with $x < -1$ where denominator is negative."},
+                                    {text: "🏆 Victory lap", correct: false, feedback: "Almost at the finish! But solve this beast first—it's the final boss."}
+                                ]
+                            }
+                        ]
+                    },
+                    { id: "1.2", name: "Factoring Techniques", content: `<h2>The AC Method</h2><p>For $ax^2 + bx + c$, find two numbers that multiply to $ac$ and add to $b$.</p><h3>Difference of Cubes</h3><div class="math-block">$a^3 - b^3 = (a-b)(a^2 + ab + b^2)$</div>` },
+                    { id: "1.3", name: "Rational Expressions", content: `<h2>The LCD Strategy</h2><p>To add fractions like $\\frac{1}{x} + \\frac{1}{x+1}$, find the LCD: $x(x+1)$.</p><div class="math-block">$\\frac{x+1 + x}{x(x+1)} = \\frac{2x+1}{x^2+x}$</div>` },
+                    { id: "1.4", name: "Exponent Rules", content: `<h2>Coming Soon</h2><p>Lesson content in development.</p>` },
+                    { id: "1.5", name: "Polynomial Operations", content: `<h2>Coming Soon</h2><p>Lesson content in development.</p>` }
+                ]
+            }
+        ];
+
+
+        function renderTOC() {
+            document.getElementById('toc-nav').innerHTML = curriculum.map(mod => `
+                <div class="mb-4">
+                    <h3 class="px-3 text-xs font-semibold text-slate-400 uppercase mb-2">${mod.title}</h3>
+                    <div class="space-y-1">
+                        ${mod.topics.map(t => `<button onclick="loadTopic('${mod.id}', '${t.id}')" id="btn-${t.id}" class="w-full text-left px-3 py-2 text-sm text-slate-600 rounded-md hover:bg-slate-100">${t.id}: ${t.name}</button>`).join('')}
+                    </div>
+                </div>`).join('');
+        }
+
+        function loadTopic(modId, topicId) {
+            const mod = curriculum.find(m => m.id === modId);
+            const topic = mod.topics.find(t => t.id === topicId);
+            currentTopicName = topic.name;
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('module-active', 'font-bold', 'text-blue-600'));
+            document.getElementById(`btn-${topicId}`).classList.add('module-active', 'font-bold', 'text-blue-600');
+            document.getElementById('content-area').innerHTML = `
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="lesson-container">${topic.content}</div>
+                    <div id="practice-zone" class="mt-8 border-t pt-8"></div>
+                    <div id="quiz-zone" class="mt-8 border-t pt-8"></div>
+                </div>`;
+            MathJax.typeset();
+            
+            if (topic.practice && topic.practice.length > 0) {
+                loadProblems(topic.practice);
+            } else {
+                document.getElementById('practice-zone').innerHTML = '<p class="italic text-slate-400">Practice problems coming soon...</p>';
+            }
+            
+            if (topic.quiz && topic.quiz.length > 0) {
+                loadQuiz(topic.quiz);
+            } else {
+                document.getElementById('quiz-zone').innerHTML = '<p class="italic text-slate-400">Quiz coming soon...</p>';
+            }
+        }
+
+        // Quiz System
+        let quizQuestions = [];
+        let currentQuizIndex = 0;
+        let quizAnswers = []; // Track: null (unanswered), true (correct), false (wrong)
+        let quizScore = {correct: 0, wrong: 0};
+        let quizAttempts = []; // Track attempts: {questionId, attempts, firstTryCorrect, skillArea}
+
+        function loadQuiz(questions) {
+            quizQuestions = questions;
+            currentQuizIndex = 0;
+            quizAnswers = new Array(questions.length).fill(null);
+            quizScore = {correct: 0, wrong: 0};
+            quizAttempts = questions.map(q => ({
+                questionId: q.id,
+                attempts: 0,
+                firstTryCorrect: null,
+                skillArea: q.skillArea || 'General'
+            }));
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const quizZone = document.getElementById('quiz-zone');
+            const q = quizQuestions[currentQuizIndex];
+            const answered = quizAnswers[currentQuizIndex];
+            
+            // Randomize choices
+            const shuffledChoices = q.choices.map((choice, idx) => ({...choice, originalIdx: idx}));
+            for (let i = shuffledChoices.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledChoices[i], shuffledChoices[j]] = [shuffledChoices[j], shuffledChoices[i]];
+            }
+            
+            const canGoPrev = currentQuizIndex > 0;
+            const canGoNext = currentQuizIndex < quizQuestions.length - 1;
+            const progressPercent = Math.round(((currentQuizIndex + 1) / quizQuestions.length) * 100);
+            
+            // If question was answered correctly, show locked state with green highlight
+            const isCorrect = answered === true;
+            
+            quizZone.innerHTML = `
+                <h3 class="text-xl font-bold text-purple-700 mb-6">📝 Quiz: Test Your Skills</h3>
+                
+                <div class="bg-purple-50 p-6 rounded-lg mb-4">
+                    <p class="text-lg font-semibold mb-4">${q.question}</p>
+                    <div class="space-y-2">
+                        ${shuffledChoices.map((choice, idx) => {
+                            const isThisCorrect = choice.correct;
+                            const showAsCorrect = isCorrect && isThisCorrect;
+                            return `
+                            <button onclick="answerQuiz(${choice.originalIdx})" 
+                                    class="w-full text-left p-4 border-2 rounded-lg transition-all ${
+                                        showAsCorrect 
+                                            ? 'bg-green-100 border-green-400 cursor-not-allowed' 
+                                            : isCorrect 
+                                                ? 'bg-white border-purple-200 opacity-50 cursor-not-allowed'
+                                                : 'bg-white border-purple-200 hover:border-purple-400 hover:bg-purple-50'
+                                    }">
+                                <span class="font-bold text-purple-600">${String.fromCharCode(65 + idx)})</span> ${choice.text}
+                                ${showAsCorrect ? ' ✓' : ''}
+                            </button>
+                        `}).join('')}
+                    </div>
+                </div>
+                
+                <div id="quiz-feedback" class="mb-4">
+                    ${isCorrect ? '<div class="p-4 rounded-lg border-2 bg-green-100 border-green-400"><p class="font-semibold">✅ Correct! Already answered.</p></div>' : ''}
+                </div>
+                
+                <div class="border-t-2 border-purple-200 pt-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <button onclick="prevQuiz()" ${!canGoPrev ? 'disabled' : ''} 
+                                class="px-4 py-2 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700 disabled:opacity-30 disabled:cursor-not-allowed">
+                            ← Prev
+                        </button>
+                        
+                        <div class="flex-1 mx-4">
+                            <div class="bg-gray-200 rounded-full h-4 overflow-hidden">
+                                <div class="bg-purple-600 h-4 transition-all duration-300" style="width: ${progressPercent}%"></div>
+                            </div>
+                            <p class="text-center text-sm font-semibold text-purple-700 mt-1">${currentQuizIndex + 1} / ${quizQuestions.length}</p>
+                        </div>
+                        
+                        <button onclick="nextQuiz()" ${!canGoNext ? 'disabled' : ''} 
+                                class="px-4 py-2 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700 disabled:opacity-30 disabled:cursor-not-allowed">
+                            Next →
+                        </button>
+                    </div>
+                    <p class="text-center text-sm text-slate-600 mb-3">
+                        Score: <span class="text-green-600 font-bold">${quizScore.correct} correct</span>, 
+                        <span class="text-red-600 font-bold">${quizScore.wrong} wrong</span>, 
+                        <span class="text-gray-500">${quizAnswers.filter(a => a === null).length} unanswered</span>
+                    </p>
+                    <div class="text-center">
+                        <button onclick="showQuizComplete()" 
+                                class="px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 shadow-lg">
+                            📊 Submit Quiz
+                        </button>
+                    </div>
+                </div>
+            `;
+            MathJax.typeset();
+        }
+
+        function answerQuiz(choiceIdx) {
+            if (quizAnswers[currentQuizIndex] !== null) return; // Already answered correctly
+            
+            const q = quizQuestions[currentQuizIndex];
+            const choice = q.choices[choiceIdx];
+            
+            // Track attempt
+            quizAttempts[currentQuizIndex].attempts++;
+            
+            const feedbackDiv = document.getElementById('quiz-feedback');
+            const isLastQuestion = currentQuizIndex >= quizQuestions.length - 1;
+            
+            if (choice.correct) {
+                quizAnswers[currentQuizIndex] = true;
+                quizScore.correct++;
+                
+                // Record if first try was correct
+                if (quizAttempts[currentQuizIndex].attempts === 1) {
+                    quizAttempts[currentQuizIndex].firstTryCorrect = true;
+                }
+                
+                feedbackDiv.innerHTML = `
+                    <div class="p-4 rounded-lg border-2 bg-green-100 border-green-400">
+                        <p class="font-semibold">${choice.feedback}</p>
+                    </div>
+                `;
+                
+                // Update score display
+                const scoreText = document.querySelector('#quiz-zone p.text-center');
+                if (scoreText) {
+                    scoreText.innerHTML = `
+                        Score: <span class="text-green-600 font-bold">${quizScore.correct} correct</span>, 
+                        <span class="text-red-600 font-bold">${quizScore.wrong} wrong</span>, 
+                        <span class="text-gray-500">${quizAnswers.filter(a => a === null).length} unanswered</span>
+                    `;
+                }
+            } else {
+                // Record first try was wrong
+                if (quizAttempts[currentQuizIndex].attempts === 1) {
+                    quizAttempts[currentQuizIndex].firstTryCorrect = false;
+                }
+                
+                // Wrong answer - show Try Again and Skip
+                feedbackDiv.innerHTML = `
+                    <div class="p-4 rounded-lg border-2 bg-red-100 border-red-400">
+                        <p class="font-semibold mb-3">${choice.feedback}</p>
+                        <div class="flex gap-3">
+                            <button onclick="resetQuizQuestion()" class="px-4 py-2 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700">
+                                Try Again
+                            </button>
+                            ${!isLastQuestion ? 
+                                '<button onclick="skipQuizQuestion()" class="px-4 py-2 bg-slate-600 text-white rounded-lg font-bold hover:bg-slate-700">Next →</button>' :
+                                '<button onclick="skipQuizQuestion()" class="px-4 py-2 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700">Finish</button>'
+                            }
+                        </div>
+                    </div>
+                `;
+            }
+            
+            MathJax.typeset();
+        }
+
+        function resetQuizQuestion() {
+            document.getElementById('quiz-feedback').innerHTML = '';
+            renderQuiz();
+        }
+
+        function skipQuizQuestion() {
+            // Mark as wrong and move on
+            if (quizAnswers[currentQuizIndex] === null) {
+                quizAnswers[currentQuizIndex] = false;
+                quizScore.wrong++;
+            }
+            
+            if (currentQuizIndex < quizQuestions.length - 1) {
+                currentQuizIndex++;
+                renderQuiz();
+            } else {
+                // Can also submit from here
+                showQuizComplete();
+            }
+        }
+
+        function showQuizComplete() {
+            const quizZone = document.getElementById('quiz-zone');
+            
+            // Calculate metrics
+            const totalQuestions = quizQuestions.length;
+            const answeredQuestions = quizAnswers.filter(a => a !== null).length;
+            const unansweredCount = totalQuestions - answeredQuestions;
+            const firstTryCorrect = quizAttempts.filter(a => a.firstTryCorrect === true).length;
+            const firstTryPercentage = answeredQuestions > 0 ? Math.round((firstTryCorrect / answeredQuestions) * 100) : 0;
+            const finalScore = quizScore.correct;
+            const finalPercentage = Math.round((finalScore / totalQuestions) * 100);
+            
+            // Warning if incomplete
+            let incompleteWarning = '';
+            if (unansweredCount > 0) {
+                incompleteWarning = `
+                    <div class="bg-orange-100 border-2 border-orange-400 rounded-lg p-4 mb-4">
+                        <p class="font-bold text-orange-800">⚠️ Incomplete Quiz</p>
+                        <p class="text-sm text-orange-700">You have ${unansweredCount} unanswered question${unansweredCount > 1 ? 's' : ''}. Scores calculated from answered questions only.</p>
+                    </div>
+                `;
+            }
+            
+            // Categorize weak areas
+            const weakAreas = quizAttempts
+                .filter(a => a.firstTryCorrect === false || a.attempts > 1)
+                .map(a => a.skillArea);
+            const uniqueWeakAreas = [...new Set(weakAreas)];
+            
+            // Determine recommendation
+            let recommendation = '';
+            let emoji = '';
+            let nextStep = '';
+            
+            if (unansweredCount > 0) {
+                emoji = '⚠️';
+                recommendation = '<span class="text-orange-600 font-bold">INCOMPLETE</span>';
+                nextStep = '<p class="text-lg mb-4">Complete all questions for accurate placement. Or retake for a fresh start.</p>';
+            } else if (firstTryPercentage === 100) {
+                emoji = '🏆';
+                recommendation = '<span class="text-green-600 font-bold">PERFECT SCORE!</span>';
+                nextStep = '<p class="text-lg mb-4">You crushed it! Skip to the <strong>next section\'s quiz</strong> - you don\'t need the practice problems.</p>';
+            } else if (firstTryPercentage >= 70) {
+                emoji = '🎯';
+                recommendation = '<span class="text-blue-600 font-bold">SOLID PERFORMANCE</span>';
+                nextStep = '<p class="text-lg mb-4">You\'re ready! Move on to the <strong>next lesson</strong>. Come back for practice if you want extra reps.</p>';
+            } else {
+                emoji = '📚';
+                recommendation = '<span class="text-orange-600 font-bold">NEEDS PRACTICE</span>';
+                nextStep = '<p class="text-lg mb-4">Work through the <strong>Practice Problems</strong> before moving on. Let\'s build that foundation!</p>';
+            }
+            
+            // Build skill recap
+            let skillRecap = '';
+            if (uniqueWeakAreas.length > 0 && firstTryPercentage < 100) {
+                skillRecap = `
+                    <div class="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4 mb-6">
+                        <h4 class="font-bold text-yellow-800 mb-2">📝 Skills Needing Review:</h4>
+                        <ul class="list-disc list-inside space-y-1 text-yellow-900">
+                            ${uniqueWeakAreas.map(skill => `<li>${skill}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Build attempt details
+            let attemptDetails = '';
+            if (firstTryPercentage < 100 && answeredQuestions > 0) {
+                const multipleAttempts = quizAttempts.filter(a => a.attempts > 1);
+                if (multipleAttempts.length > 0) {
+                    attemptDetails = `
+                        <div class="bg-blue-50 border-2 border-blue-300 rounded-lg p-4 mb-6">
+                            <h4 class="font-bold text-blue-800 mb-2">🔄 Questions with Multiple Attempts:</h4>
+                            <p class="text-sm text-blue-900">
+                                ${multipleAttempts.length} question${multipleAttempts.length > 1 ? 's' : ''} required retries. 
+                                Good persistence! Review those ${uniqueWeakAreas.join(', ')} concepts.
+                            </p>
+                        </div>
+                    `;
+                }
+            }
+            
+            quizZone.innerHTML = `
+                <div class="text-center py-6">
+                    <p class="text-6xl mb-4">${emoji}</p>
+                    <h3 class="text-3xl font-bold text-purple-600 mb-2">${recommendation}</h3>
+                    <p class="text-lg text-slate-600 mb-6">Quiz Results</p>
+                    
+                    ${incompleteWarning}
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6 max-w-md mx-auto">
+                        <div class="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-lg border-2 border-green-400">
+                            <p class="text-sm text-green-800 font-semibold">First Try</p>
+                            <p class="text-3xl font-bold text-green-700">${firstTryCorrect}/${answeredQuestions}</p>
+                            <p class="text-sm text-green-600">${firstTryPercentage}%</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-purple-100 to-purple-200 p-4 rounded-lg border-2 border-purple-400">
+                            <p class="text-sm text-purple-800 font-semibold">Final Score</p>
+                            <p class="text-3xl font-bold text-purple-700">${finalScore}/${totalQuestions}</p>
+                            <p class="text-sm text-purple-600">${finalPercentage}%</p>
+                        </div>
+                    </div>
+                    
+                    ${skillRecap}
+                    ${attemptDetails}
+                    
+                    <div class="bg-slate-100 border-2 border-slate-300 rounded-lg p-6 mb-6 text-left">
+                        <h4 class="font-bold text-slate-800 mb-3 text-center">📋 What This Means:</h4>
+                        ${nextStep}
+                        ${firstTryPercentage < 70 && answeredQuestions > 0 ? `
+                            <div class="bg-white rounded-lg p-4 border-l-4 border-orange-500">
+                                <p class="font-semibold text-orange-800 mb-2">🎯 Quick Review Tips:</p>
+                                <ul class="list-disc list-inside space-y-1 text-sm text-slate-700">
+                                    ${uniqueWeakAreas.includes('Absolute Value Equations') ? '<li><strong>Absolute Value Equations:</strong> Split into two cases (+/-)</li>' : ''}
+                                    ${uniqueWeakAreas.includes('Absolute Value Inequalities') ? '<li><strong>Absolute Value Inequalities:</strong> Less than = bounded interval, greater than = outside interval</li>' : ''}
+                                    ${uniqueWeakAreas.includes('Compound Inequalities') ? '<li><strong>Compound Inequalities:</strong> Solve all parts together, keep inequality direction</li>' : ''}
+                                    ${uniqueWeakAreas.includes('Rational Inequalities') ? '<li><strong>Rational Inequalities:</strong> Find zeros AND undefined points, test regions</li>' : ''}
+                                    ${uniqueWeakAreas.includes('Polynomial Inequalities') ? '<li><strong>Polynomial Inequalities:</strong> Factor, find zeros, test sign in each region</li>' : ''}
+                                    ${uniqueWeakAreas.includes('Word Problems') ? '<li><strong>Word Problems:</strong> Define variables, translate constraints into inequalities</li>' : ''}
+                                    ${uniqueWeakAreas.includes('Advanced Mixed') ? '<li><strong>Mixed Problems:</strong> Break into cases, watch for undefined points, solve carefully</li>' : ''}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="flex gap-4 justify-center">
+                        <button onclick="loadQuiz(quizQuestions)" class="px-6 py-3 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700">
+                            Retake Quiz
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function nextQuiz() {
+            if (currentQuizIndex < quizQuestions.length - 1) {
+                currentQuizIndex++;
+                renderQuiz();
+            }
+        }
+
+        function prevQuiz() {
+            if (currentQuizIndex > 0) {
+                currentQuizIndex--;
+                
+                // If going back to wrong/unanswered question, reset it
+                if (quizAnswers[currentQuizIndex] === false || quizAnswers[currentQuizIndex] === null) {
+                    // Don't need to do anything special - renderQuiz will show fresh question
+                }
+                
+                renderQuiz();
+            }
+        }
+
+        let currentProblem = null;
+        let currentStep = 0;
+        let currentProblemIndex = 0;
+        let allProblems = [];
+
+        function renderPractice(problem) {
+            currentProblem = problem;
+            currentStep = 0;
+            showStep();
+        }
+
+        function loadProblems(problems) {
+            allProblems = problems;
+            currentProblemIndex = 0;
+            renderPractice(allProblems[0]);
+        }
+
+        function nextProblem() {
+            currentProblemIndex++;
+            if (currentProblemIndex >= allProblems.length) {
+                document.getElementById('practice-zone').innerHTML = `
+                    <div class="text-center py-8">
+                        <p class="text-3xl mb-4">🏆</p>
+                        <h3 class="text-2xl font-bold text-green-600 mb-2">All Problems Complete!</h3>
+                        <p class="text-slate-600 mb-4">You've mastered this lesson!</p>
+                        <button onclick="loadProblems(allProblems)" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700">Start Over</button>
+                    </div>
+                `;
+            } else {
+                renderPractice(allProblems[currentProblemIndex]);
+            }
+        }
+
+        function prevProblem() {
+            if (currentProblemIndex > 0) {
+                currentProblemIndex--;
+                renderPractice(allProblems[currentProblemIndex]);
+            }
+        }
+
+        function skipToNext() {
+            if (currentProblemIndex < allProblems.length - 1) {
+                currentProblemIndex++;
+                renderPractice(allProblems[currentProblemIndex]);
+            }
+        }
+
+        function showStep() {
+            const step = currentProblem.steps[currentStep];
+            const practiceZone = document.getElementById('practice-zone');
+            
+            // Randomize choices
+            const shuffledChoices = step.choices.map((choice, idx) => ({...choice, originalIdx: idx}));
+            for (let i = shuffledChoices.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledChoices[i], shuffledChoices[j]] = [shuffledChoices[j], shuffledChoices[i]];
+            }
+            
+            const canGoPrev = currentProblemIndex > 0;
+            const canGoNext = currentProblemIndex < allProblems.length - 1;
+            
+            let html = `
+                <h3 class="text-xl font-bold text-slate-700 mb-4">🎯 Practice Problem</h3>
+                <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                    <p class="font-bold text-lg">Problem: ${currentProblem.problem}</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-lg mb-4">
+                    <p class="text-2xl font-bold mb-2">${step.display}</p>
+                    ${step.workShown ? `<p class="text-sm text-slate-600 italic mt-2">${step.workShown}</p>` : ''}
+                </div>
+                <p class="font-semibold mb-3">${step.question}</p>
+                <div class="space-y-2" id="choices-container">
+                    ${shuffledChoices.map((choice, idx) => `
+                        <button onclick="handleChoice(${choice.originalIdx})" class="w-full text-left p-4 bg-white border-2 border-slate-200 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-all">
+                            <span class="font-bold text-blue-600">${String.fromCharCode(65 + idx)})</span> ${choice.text}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="feedback" class="mt-4"></div>
+                <div class="mt-4 flex items-center justify-center gap-4">
+                    <button onclick="prevProblem()" ${!canGoPrev ? 'disabled' : ''} class="px-4 py-2 bg-slate-600 text-white rounded-lg font-bold hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed">← Prev</button>
+                    <span class="text-sm text-slate-600 font-semibold">Problem ${currentProblemIndex + 1} of ${allProblems.length}</span>
+                    <button onclick="skipToNext()" ${!canGoNext ? 'disabled' : ''} class="px-4 py-2 bg-slate-600 text-white rounded-lg font-bold hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed">Next →</button>
+                </div>
+            `;
+            
+            practiceZone.innerHTML = html;
+            MathJax.typeset();
+        }
+
+        function handleChoice(choiceIdx) {
+            const step = currentProblem.steps[currentStep];
+            const choice = step.choices[choiceIdx];
+            const feedbackDiv = document.getElementById('feedback');
+            
+            feedbackDiv.innerHTML = `
+                <div class="p-4 rounded-lg ${choice.correct ? 'bg-green-100 border-2 border-green-400' : 'bg-yellow-100 border-2 border-yellow-400'}">
+                    <p class="font-semibold">${choice.feedback}</p>
+                    ${choice.correct ? '<button onclick="nextStep()" class="mt-3 px-4 py-2 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700">Continue →</button>' : '<button onclick="showStep()" class="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700">Try Again</button>'}
+                </div>
+            `;
+            MathJax.typeset();
+        }
+
+        function nextStep() {
+            currentStep++;
+            if (currentStep >= currentProblem.steps.length) {
+                const isLastProblem = currentProblemIndex >= allProblems.length - 1;
+                document.getElementById('practice-zone').innerHTML = `
+                    <div class="text-center py-8">
+                        <p class="text-3xl mb-4">🎉</p>
+                        <h3 class="text-2xl font-bold text-green-600 mb-2">Problem Complete!</h3>
+                        <p class="text-slate-600 mb-2">Great work!</p>
+                        <p class="text-sm text-slate-500 mb-4">Problem ${currentProblemIndex + 1} of ${allProblems.length}</p>
+                        <div class="flex gap-3 justify-center">
+                            <button onclick="renderPractice(currentProblem)" class="px-6 py-2 bg-slate-600 text-white rounded-lg font-bold hover:bg-slate-700">↺ Try Again</button>
+                            ${!isLastProblem ? '<button onclick="nextProblem()" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700">Next Problem →</button>' : '<button onclick="nextProblem()" class="px-6 py-2 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700">Finish! 🏆</button>'}
+                        </div>
+                    </div>
+                `;
+                MathJax.typeset();
+            } else {
+                showStep();
+            }
+        }
+
+        window.onload = renderTOC;
+    </script>
+</body>
+</html>
