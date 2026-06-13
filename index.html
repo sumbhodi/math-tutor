@@ -541,6 +541,8 @@
             const mod = curriculum.find(m => m.id === modId);
             const topic = mod.topics.find(t => t.id === topicId);
             currentTopicName = topic.name;
+            window.currentLesson = { module: mod.title || '', name: topic.name, content: topic.content };
+            if (window.tutor) tutor.onLessonChange();
             document.querySelectorAll('nav button').forEach(b => b.classList.remove('module-active', 'font-bold', 'text-blue-600'));
             document.getElementById(`btn-${topicId}`).classList.add('module-active', 'font-bold', 'text-blue-600');
             document.getElementById('content-area').innerHTML = `
@@ -1033,5 +1035,6 @@
 
         window.onload = renderTOC;
     </script>
+    <script src="tutor.js"></script>
 </body>
 </html>
