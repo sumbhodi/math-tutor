@@ -30,11 +30,11 @@ const tutor = (() => {
     { id: 'groq',       name: 'Groq (free)',         keyUrl: 'https://console.groq.com/keys',
       url: 'https://api.groq.com/openai/v1/chat/completions',                       model: 'llama-3.3-70b-versatile' },
     { id: 'gemini',     name: 'Gemini (free)',       keyUrl: 'https://aistudio.google.com/apikey',
-      url: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', model: 'gemini-2.5-flash' },
+      url: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', model: 'gemini-2.5-flash', vision: true },
     { id: 'openrouter', name: 'OpenRouter (free)',   keyUrl: 'https://openrouter.ai/keys',
       url: 'https://openrouter.ai/api/v1/chat/completions',                          model: 'meta-llama/llama-3.3-70b-instruct:free' },
     { id: 'anthropic',  name: 'Anthropic — Claude',  keyUrl: 'https://console.anthropic.com/settings/keys',
-      anthropic: true,                                                               model: 'claude-haiku-4-5-20251001' },
+      anthropic: true,                                                               model: 'claude-haiku-4-5-20251001', vision: true },
   ];
 
   // ── key store — localStorage only ───────────────────────────────────────────
@@ -49,6 +49,7 @@ const tutor = (() => {
   let _history = [];
   let _lessonName = '';
   let _busy = false;
+  let _pendingImage = null;   // data URL of a photo waiting to send
 
   // ── the script — explains, won't solve, teaches one step at a time ───────────
   function teachingPrompt() {
@@ -60,6 +61,8 @@ const tutor = (() => {
     return `You are the Math Tutor — a warm, patient math teacher. You LOVE explaining ideas, and you make up your own examples and practice problems. You never hand the student the final answer to a problem — you walk them to it.
 
 ${ctx}
+
+IF THE STUDENT SHARES A PHOTO (their homework or a textbook page): read it, say what problem you see — do NOT solve it outright — then run the step session on that problem.
 
 WHEN THE STUDENT ASKS ABOUT A CONCEPT OR TOPIC
 (e.g. "help me get better at factoring", "what is the quadratic formula", or "how do I do this?") — answer in this order:
@@ -241,26 +244,51 @@ You have no memory between sessions. The student does not have the luxury of fai
   function renderChatFoot() {
     document.getElementById('iqt-foot').innerHTML = `
       <button id="iqt-how" class="w-full mb-2 bg-amber-100 text-amber-900 border border-amber-300 rounded-lg py-2 text-sm font-semibold hover:bg-amber-200">Give me a practice problem ▶</button>
-      <div class="flex gap-2">
+      <div id="iqt-attach-chip" style="display:none" class="items-center gap-2 mb-2 bg-slate-100 border border-slate-200 rounded-lg px-2 py-1"></div>
+      <div id="iqt-plus-menu" style="display:none" class="gap-2 mb-2">
+        <button id="iqt-browse" class="flex-1 bg-slate-100 border border-slate-300 rounded-lg py-2 text-sm hover:bg-slate-200">📁 Browse</button>
+        <button id="iqt-camera" class="flex-1 bg-slate-100 border border-slate-300 rounded-lg py-2 text-sm hover:bg-slate-200">📷 Camera</button>
+      </div>
+      <div class="flex gap-2 items-end">
+        <button id="iqt-plus" title="Add a photo of your homework or textbook" class="bg-slate-200 text-slate-700 rounded-lg w-10 h-10 flex-shrink-0 text-xl font-bold hover:bg-slate-300">＋</button>
         <textarea id="iqt-in" rows="1" placeholder="Ask the tutor…" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm resize-none"></textarea>
         <button id="iqt-send" class="bg-blue-600 text-white rounded-lg px-4 font-bold hover:bg-blue-700">Send</button>
-      </div>`;
+      </div>
+      <input id="iqt-file-browse" type="file" accept="image/*" class="hidden">
+      <input id="iqt-file-camera" type="file" accept="image/*" capture="environment" class="hidden">`;
     document.getElementById('iqt-how').onclick = () => send('Give me a practice problem to try, and walk me through it step by step.');
     document.getElementById('iqt-send').onclick = () => {
       const inp = document.getElementById('iqt-in');
       const t = inp.value.trim();
-      if (t) { inp.value = ''; send(t); }
+      if (t || _pendingImage) { inp.value = ''; send(t || "Here's a photo — what do you see?"); }
     };
+    const menu = document.getElementById('iqt-plus-menu');
+    document.getElementById('iqt-plus').onclick = () => { menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex'; };
+    const browse = document.getElementById('iqt-file-browse');
+    const camera = document.getElementById('iqt-file-camera');
+    document.getElementById('iqt-browse').onclick = () => { menu.style.display = 'none'; browse.click(); };
+    document.getElementById('iqt-camera').onclick = () => { menu.style.display = 'none'; camera.click(); };
+    browse.onchange = () => { if (browse.files[0]) loadImage(browse.files[0]); browse.value = ''; };
+    camera.onchange = () => { if (camera.files[0]) loadImage(camera.files[0]); camera.value = ''; };
   }
 
   // ── messages ─────────────────────────────────────────────────────────────────
-  function bubble(role, text) {
+  function bubble(role, text, image) {
     const body = document.getElementById('iqt-body');
     const div = document.createElement('div');
     div.className = role === 'user'
       ? 'ml-auto max-w-[85%] bg-blue-600 text-white rounded-2xl rounded-br-sm px-3 py-2 text-sm whitespace-pre-wrap'
       : 'mr-auto max-w-[90%] bg-white border border-slate-200 rounded-2xl rounded-bl-sm px-3 py-2 text-sm whitespace-pre-wrap leading-relaxed';
-    div.textContent = text;
+    if (image) {
+      const img = document.createElement('img');
+      img.src = image;
+      img.className = 'rounded-lg mb-2 max-h-48 block';
+      div.appendChild(img);
+    }
+    const txt = document.createElement('div');   // text lives in its own node so streaming can't clobber the image
+    txt.textContent = text;
+    div.appendChild(txt);
+    div._txt = txt;
     body.appendChild(div);
     body.scrollTop = body.scrollHeight;
     return div;
@@ -270,6 +298,61 @@ You have no memory between sessions. The student does not have the luxury of fai
     if (window.MathJax?.typesetPromise) MathJax.typesetPromise([el]).catch(() => {});
   }
 
+  // ── images — attach a photo of homework / a textbook page ───────────────────
+  // downscale to a jpeg data URL: smaller payload, faster, cheaper.
+  function loadImage(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 1280;
+        let w = img.width, h = img.height;
+        if (w > max || h > max) { const s = max / Math.max(w, h); w = Math.round(w * s); h = Math.round(h * s); }
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        _pendingImage = c.toDataURL('image/jpeg', 0.85);
+        showChip();
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function showChip() {
+    const chip = document.getElementById('iqt-attach-chip');
+    if (!chip) return;
+    chip.style.display = 'flex';
+    chip.innerHTML = `<img src="${_pendingImage}" class="h-10 w-10 object-cover rounded"><span class="text-xs text-slate-500 flex-1">photo attached</span><button id="iqt-attach-x" class="text-slate-400 hover:text-red-500 px-1">✕</button>`;
+    document.getElementById('iqt-attach-x').onclick = clearImage;
+  }
+
+  function clearImage() {
+    _pendingImage = null;
+    const chip = document.getElementById('iqt-attach-chip');
+    if (chip) { chip.style.display = 'none'; chip.innerHTML = ''; }
+  }
+
+  // ── per-provider message shape (text, or text + image) ──────────────────────
+  function toOpenAI(m) {
+    if (!m.image) return { role: m.role, content: m.content };
+    return { role: m.role, content: [
+      { type: 'text', text: m.content || '' },
+      { type: 'image_url', image_url: { url: m.image } }
+    ]};
+  }
+
+  function toAnthropic(m) {
+    if (!m.image) return { role: m.role, content: m.content };
+    const comma = m.image.indexOf(',');
+    const meta = m.image.slice(0, comma), data = m.image.slice(comma + 1);
+    const mt = (meta.match(/data:(.*?);/) || [, 'image/jpeg'])[1];
+    return { role: m.role, content: [
+      { type: 'text', text: m.content || '' },
+      { type: 'image', source: { type: 'base64', media_type: mt, data } }
+    ]};
+  }
+
   // ── send ───────────────────────────────────────────────────────────────────
   async function greet() {
     await send('(I just opened this lesson — tell me what you see, then ask what I need.)', true);
@@ -277,26 +360,35 @@ You have no memory between sessions. The student does not have the luxury of fai
 
   async function send(text, silent) {
     if (_busy || !hasKey()) { if (!hasKey()) renderGate(); return; }
-    if (!silent) bubble('user', text);
-    _history.push({ role: 'user', content: text });
+    const p = provider();
+    const image = _pendingImage;
+
+    // a photo needs a vision model
+    if (image && !p.vision) {
+      bubble('assistant', '📷 To read a photo, switch to Gemini (free) or Anthropic in ⚙ — those models can see images. Your photo is still attached.');
+      return;
+    }
+
+    if (!silent) bubble('user', text, image);
+    _history.push(image ? { role: 'user', content: text, image } : { role: 'user', content: text });
+    clearImage();
 
     _busy = true;
     const out = bubble('assistant', '…');
     let acc = '';
-    const onChunk = c => { acc += c; out.textContent = acc; document.getElementById('iqt-body').scrollTop = 1e9; };
+    const onChunk = c => { acc += c; out._txt.textContent = acc; document.getElementById('iqt-body').scrollTop = 1e9; };
 
     try {
-      const p = provider();
       const sys = teachingPrompt();
       if (p.anthropic) {
-        await streamAnthropic(p, sys, _history, onChunk);
+        await streamAnthropic(p, sys, _history.map(toAnthropic), onChunk);
       } else {
-        await streamOpenAI(p, [{ role: 'system', content: sys }, ..._history], onChunk);
+        await streamOpenAI(p, [{ role: 'system', content: sys }, ..._history.map(toOpenAI)], onChunk);
       }
       _history.push({ role: 'assistant', content: acc });
       typesetMath(out);
     } catch (e) {
-      out.textContent = '[tutor error: ' + (e.message || e) + ']\n\nCheck your key in ⚙, or try another provider.';
+      out._txt.textContent = '[tutor error: ' + (e.message || e) + ']\n\nCheck your key in ⚙, or try another provider.';
     }
     _busy = false;
   }
